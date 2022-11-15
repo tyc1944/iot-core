@@ -1,0 +1,25 @@
+plugins {
+    id 'org.springframework.boot' version '2.4.1'
+}
+apply plugin: 'application'
+apply from: '../gradle/docker.gradle'
+
+springBoot {
+    mainClass  = 'com.yunmo.iot.ServerApplication'
+}
+
+
+dependencies {
+    implementation 'com.yunmo.core:user-api'
+    implementation "com.yunmo.boot:rest-server-starter"
+    implementation "com.yunmo.boot:genrpc-starter"
+    implementation "com.yunmo.boot:resource-server-starter"
+    implementation "com.yunmo.boot:data-starter"
+    implementation "com.yunmo:domain-commons:1.2.13"
+    implementation project(":core-infrastructure")
+    implementation project(":core-api")
+    implementation 'io.opentracing.contrib:opentracing-spring-web-starter'
+    implementation 'org.apache.commons:commons-lang3'
+    implementation "org.zalando:problem-spring-web-starter"
+
+}

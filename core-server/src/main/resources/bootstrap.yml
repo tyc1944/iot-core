@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: iot-core
+  cloud:
+    consul:
+      host: consul
+      port: 8500
+      enabled: false
+      config:
+        enabled: false
+        format: YAML

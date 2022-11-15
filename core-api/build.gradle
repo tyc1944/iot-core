@@ -1,0 +1,22 @@
+plugins {
+    id "com.google.protobuf" version "0.8.17"
+}
+apply plugin: 'java-library'
+apply from: '../gradle/grpc.gradle'
+apply from: '../gradle/publish.gradle'
+sourceCompatibility = 1.8
+
+dependencies {
+    annotationProcessor "io.genrpc:genrpc-processor:${genrpc_version}"
+    api "io.genrpc:genrpc-runtime"
+    api "com.yunmo:domain-commons"
+    api 'com.auth0:java-jwt'
+    implementation "javax.annotation:javax.annotation-api"
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.64'
+    api 'com.alibaba:easyexcel:2.2.10'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    testImplementation "io.grpc:grpc-all:1.31.1"
+    implementation 'com.vladmihalcea:hibernate-types-52:2.12.1'
+    api 'org.bouncycastle:bcpkix-jdk15on:1.68'
+    api "org.springframework:spring-context"
+}

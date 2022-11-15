@@ -1,0 +1,92 @@
+http:
+  port: 8080
+server:
+  port: 8443
+  ssl:
+    key-store: classpath:store/keystore.jks
+    key-store-password: yunmoyunmo
+    key-alias: iot-core
+    key-password: yunmo
+    enabled: true
+    trust-store: classpath:store/truststore.jks
+    trust-store-password: yunmoyunmo
+    client-auth: WANT
+spring:
+  profiles:
+    default: dev
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+        dialect: org.hibernate.dialect.MySQL57Dialect
+      org:
+        hibernate:
+          envers:
+            audit_table_suffix: _audit_log
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://iot-mysql:3306/iot-core?allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true
+    username: core
+    password: aks&65&*^GHkj
+    hikari:
+      prepStmtCacheSize: 256
+      prepStmtCacheSqlLimit: 2048
+  redis:
+    database: 0
+    host: core-redis-master
+    password: 4CPAD2lWKV
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
+        page-parameter: current
+    cassandra:
+      keyspace-name: iot
+      local-datacenter: datacenter1
+      contact_points: iot-cassandra
+      username: cassandra
+      password: p7EcJDoYFi
+      session-name: scylladb
+    redis:
+      repositories:
+        enabled: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+#          jwk-set-uri: http://10.234.12.89:8080/oauth2/jwks
+          public-key-location: classpath:jwt.pub
+
+swagger:
+  oauth2:
+    client_id: iot
+    oauth_server:
+
+mqtt:
+  client:
+    uri: tcp://iot-emqx:11883
+    username: ${spring.application.name}
+
+mybatis:
+  mapper-locations: classpath:mybatis/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+clickhouse:
+  url: jdbc:clickhouse://iot-clickhouse:8123
+  username: iot
+  password: qaXT6tOt9G8L8q0As
+
+file:
+  host: http://iot-test.yunmotec.com:32055/file/

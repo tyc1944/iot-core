@@ -1,0 +1,17 @@
+apply plugin: 'com.google.cloud.tools.jib'
+
+jib {
+    from {
+        image = 'registry.yunmotec.com:1443/iot/java:11-jdk'
+    }
+    container {
+        ports = ['8080','9090' ]
+        //jvmFlags = ["-javaagent:opentracing-specialagent-${sa_version}.jar".toString(),'-Dsa.config=tracing.properties']
+        creationTime = "USE_CURRENT_TIMESTAMP"
+    }
+}
+
+dependencies {
+    compileOnly "io.opentracing.contrib.specialagent:opentracing-specialagent-api:${sa_version}"
+    compileOnly 'io.opentracing.contrib:jaeger-client-bundle:1.0.0'
+}

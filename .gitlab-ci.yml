@@ -1,0 +1,40 @@
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
+stages:
+  - build_image
+
+build:
+  tags: ['java']
+  image: registry.yunmotec.com:1443/gradle:jdk11
+  stage: build_image
+  except:
+    - master
+    - tags
+  script:
+    - ./gradlew :core-server:jib -Djib.to.image=registry.yunmotec.com:1443/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:${CI_COMMIT_REF_NAME}.${CI_PIPELINE_IID}
+  cache:
+    key: "$CI_PROJECT_NAME"
+    paths:
+      - .gradle
+
+quanxin:
+  tags: ['java']
+  image: registry.yunmotec.com:1443/gradle:jdk11
+  stage: build_image
+  only:
+    - tags
+  except:
+    - develop
+    - /^release.*$/
+    - /^feature.*$/
+  script:
+    - ./gradlew :core-server:jib -Djib.to.auth.username=泉信技术 -Djib.to.auth.password=mBB@vY@n5xQmXmh -Djib.to.image=registry.cn-beijing.aliyuncs.com/quanxinbim/$CI_PROJECT_NAME:${CI_COMMIT_REF_NAME}.${CI_PIPELINE_IID}
+  cache:
+    key: "$CI_PROJECT_NAME"
+    paths:
+      - .gradle
+

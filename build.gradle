@@ -1,0 +1,62 @@
+plugins {
+    id 'java'
+    id 'com.google.cloud.tools.jib' version '3.1.1'
+    id "org.sonarqube" version "3.0"
+}
+apply from: 'gradle/sonar.gradle'
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+
+    group 'com.yunmo.iot'
+    version '1.3.8test19'
+
+    sourceCompatibility = 1.11
+
+
+    configurations {
+        all*.exclude group:'org.springframework.boot',
+        module:'spring-boot-starter-logging'
+    }
+
+
+    dependencies {
+        implementation platform("com.yunmo.boot:application-dependencies:${yunmo_boot_version}")
+        annotationProcessor platform("com.yunmo.boot:application-dependencies:${yunmo_boot_version}")
+
+        compileOnly "com.yunmo:generator-annotation"
+        annotationProcessor "com.yunmo:generator-processors:$yunmo_generator_version"
+
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor "org.projectlombok:lombok:${lombok_version}"
+        testCompileOnly 'org.projectlombok:lombok'
+        testAnnotationProcessor "org.projectlombok:lombok:${lombok_version}"
+        testImplementation('org.junit.jupiter:junit-jupiter')
+    }
+
+    test {
+        useJUnitPlatform()
+        testLogging {
+            events "passed", "skipped", "failed"
+        }
+    }
+
+    repositories {
+        mavenLocal()
+        maven {
+            url "https://maven.aliyun.com/repository/public"
+        }
+        maven {
+            allowInsecureProtocol = true
+            credentials {
+                username 'maven'
+                password 'gV7woQWfT8'
+            }
+            url 'http://nexus.yunmotec.com:32055/repository/maven-public/'
+            authentication {
+                basic(BasicAuthentication)
+            }
+        }
+    }
+}

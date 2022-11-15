@@ -1,0 +1,36 @@
+apply plugin: 'maven-publish'
+
+task sourceJar(type: Jar) {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allJava
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact tasks.sourceJar
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            def releasesUrl = "http://nexus.yunmotec.com:32055/repository/maven-releases/"
+            def snapshotsUrl = "http://nexus.yunmotec.com:32055/repository/maven-snapshots/"
+            url = version.endsWith('SNAPSHOT') ? snapshotsUrl : releasesUrl
+            allowInsecureProtocol true
+            credentials {
+                username project.maven_user
+                password project.maven_password
+            }
+        }
+    }
+}

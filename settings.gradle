@@ -1,0 +1,14 @@
+pluginManagement {
+    repositories {
+        maven {
+            url 'https://maven.aliyun.com/repository/gradle-plugin'
+        }
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'iot-core'
+include 'core-domain'
+include 'core-server'
+include 'core-infrastructure'
+include 'core-api'

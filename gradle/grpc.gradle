@@ -1,0 +1,31 @@
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.13.0"
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.31.1'
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {java {
+//                option "lite"
+            }}
+            task.plugins {grpc {}}
+        }
+    }
+}
+
+idea {
+    sourceSets {
+        main {
+            java {
+                srcDirs += ["build/generated/sources/annotationProcessor/java/main"]
+            }
+            proto {
+                srcDir 'src/main/resources'
+            }
+        }
+    }
+}

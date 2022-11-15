@@ -1,0 +1,34 @@
+apply plugin: 'java-library'
+
+sourceSets {
+    main {
+        output.resourcesDir = "build/classes/java/main"
+    }
+}
+compileJava {
+    dependsOn(cleanProcessResources,processResources)
+}
+dependencies {
+    api project(":core-domain")
+    api project(":core-api")
+    implementation "org.apache.pulsar:pulsar-client"
+    implementation 'mysql:mysql-connector-java'
+    implementation "com.yunmo:id-generator"
+    implementation 'com.datastax.cassandra:cassandra-driver-extras'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3'
+    implementation "com.yunmo.boot:mqtt-starter"
+    implementation "com.yunmo.boot:data-starter"
+    implementation "com.yunmo.boot:clickhouse-data-starter"
+    implementation "com.yunmo.iot:pipe-clickhouse:1.7.0"
+    implementation 'org.springframework.boot:spring-boot-starter-data-cassandra'
+    implementation("org.mapstruct:mapstruct")
+    annotationProcessor("org.mapstruct:mapstruct-processor")
+}
+
+compileJava {
+    options.compilerArgs = [
+            '-Amapstruct.unmappedTargetPolicy=WARN',
+            '-Amapstruct.defaultComponentModel=spring'
+    ]
+}
+

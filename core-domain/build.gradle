@@ -1,0 +1,16 @@
+apply plugin: 'java-library'
+
+apply from: '../gradle/publish.gradle'
+
+dependencies {
+    implementation project(":core-api")
+    implementation 'org.springframework:spring-context'
+    api "com.yunmo.iot:pipe-record"
+    api "com.yunmo.iot:pipe-core:1.6.35"
+    implementation "com.yunmo.iot:iot-dsl"
+    implementation 'org.apache.commons:commons-lang3'
+    implementation "org.jdbi:jdbi3-json"
+    implementation "org.apache.flink:flink-table-runtime-blink_2.12"
+    implementation 'com.squareup:javapoet:1.13.0'
+
+}
